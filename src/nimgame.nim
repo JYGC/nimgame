@@ -22,7 +22,7 @@ proc getComputerMove(piles: seq[int]): (int, int) =
   for i, stones in pairs(piles):
     for j in 1..stones:
       validMoves.add((i, j))
-  return validMoves[rand(validMoves.len)]
+  return validMoves[rand(validMoves.len - 1)]
 
 proc getPlayerMove(piles: seq[int]): (int, int) =
   var validMove = false
@@ -37,9 +37,16 @@ proc getPlayerMove(piles: seq[int]): (int, int) =
       echo "Invalid move. Please try again."
   return (pileIndex, stoneCount)
 
+proc makePiles(): seq[int] =
+  var noOfPiles = rand(3..10)
+  var piles: seq[int] = @[]
+  for p in 0..noOfPiles - 1:
+    piles.add(rand(2..10))
+  return piles
+
 proc nimGame() =
   # const pileCount = 3
-  var piles: seq[int] = @[3, 4, 5]
+  var piles: seq[int] = makePiles()
   var currentPlayer = "Player"
 
   while not isGameOver(piles):
@@ -58,4 +65,6 @@ proc nimGame() =
   printPiles(piles)
   echo currentPlayer, " wins!"
 
-nimGame()
+when isMainModule:
+  randomize()
+  nimGame()
